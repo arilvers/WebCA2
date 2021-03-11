@@ -1,0 +1,37 @@
+{
+  "name": "webca2",
+  "version": "1.0.0",
+  "description": "WebCa2 Project",
+  "main": "src/api/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/api/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arilvers/WebCA2.git"
+  },
+  "keywords": [
+    "webca",
+    "json"
+  ],
+  "author": "Ariane Martinez Gregório",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arilvers/WebCA2/issues"
+  },
+  "homepage": "https://github.com/arilvers/WebCA2#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.11.15",
+    "sanitizer": "^0.1.3",
+    "striptags": "^3.1.1"
+  }
+}
