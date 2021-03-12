@@ -3,7 +3,7 @@
 
         var currentUrl = window.location.href;
         var currentHost = currentUrl.split('/')[0]+currentUrl.split('/')[1]+'//'+currentUrl.split('/')[2]
-        var baseUrl = currentHost;
+        var baseUrl = currentHost; 
   
         function getHost (){
             var i=0,domain=document.domain,p=domain.split('.'),s='_gd'+(new Date()).getTime();
