@@ -1,5 +1,22 @@
         //base url without final bar 
-        var baseUrl = 'http://localhost:3000';
+        //var baseUrl = 'http://localhost:3000';
+
+        var currentUrl = window.location.href;
+        var currentHost = currentUrl.split('/')[0]+currentUrl.split('/')[1]+'//'+currentUrl.split('/')[2]
+        var baseUrl = currentHost;
+  
+        function getHost (){
+            var i=0,domain=document.domain,p=domain.split('.'),s='_gd'+(new Date()).getTime();
+            while(i<(p.length-1) && document.cookie.indexOf(s+'='+s)==-1){
+                domain = p.slice(-1-(++i)).join('.');
+                document.cookie = s+"="+s+";domain="+domain+";";
+            }
+            document.cookie = s+"=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain="+domain+";";
+            return domain;
+        }
+
+
+
         var pathAPI = '/api/products';
         var APIUrl = baseUrl+pathAPI;
 	    var imagesUrl = baseUrl
