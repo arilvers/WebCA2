@@ -10,6 +10,7 @@ const cors = require('cors')
 
 const app = express()
 
+//Database credentials defined in .env file
 const dbServer = process.env.DB_SERVER;
 const dbName = process.env.DB_NAME;
 const dbUser = process.env.DB_USER;
