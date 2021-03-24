@@ -46,6 +46,7 @@ const getDateTime = function() {
     minute   = dt.getMinutes().toString().padStart(2, "0");
     second   = dt.getSeconds().toString().padStart(2, "0");
 
+    //Formated date
     return year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
 }
 
