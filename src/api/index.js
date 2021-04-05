@@ -15,10 +15,10 @@ const dbServer = process.env.DB_SERVER;
 const dbName = process.env.DB_NAME;
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
+const dbCluster = process.env.DB_CLUSTER;
 
 //change connectionString acording to your server connection - in this case, is Atlas Mongo DB
-let connectionString =  ''+dbServer+dbUser+':'+dbPassword+'@cluster0.7yv5t.mongodb.net/'+dbName+'?retryWrites=true&w=majority'
-
+let connectionString =  ''+dbServer+dbUser+':'+dbPassword+dbCluster+dbName;
 
 mongoose.Promise = global.Promise;
 //Connect to Mongo database
