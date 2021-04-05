@@ -17,7 +17,7 @@
 
 
 
-        var pathAPI = '/api/products';
+        var pathAPI = '/api/items';
         var APIUrl = baseUrl+pathAPI;
 	    var imagesUrl = baseUrl
 
@@ -129,9 +129,9 @@
 
 
 
-        function AddToCart(id, product, quantity, price){
-            //store products data in javascript localStorage
-            localStorage.setItem("product" + id, product);
+        function AddToCart(id, item, quantity, price){
+            //store items data in javascript localStorage
+            localStorage.setItem("item" + id, item);
             localStorage.setItem("quantity" + id, quantity);
             price = price * quantity;
             localStorage.setItem("price" + id, price);
@@ -153,11 +153,11 @@
             // Save back to localStorage
             localStorage.setItem('ids', uniqids.toString());
 
-            //show product name added to cart
+            //show item name added to cart
             document.querySelector("#cartAddMessage").innerHTML = `
-                Product <b>`+product+`</b> was successfully added to cart!    
+                Item <b>`+item+`</b> was successfully added to cart!    
                 <div class="mt-3 mb-3">
-                    <a href="shopping-cart.html">See products in shopping cart</a>
+                    <a href="shopping-cart.html">See items in shopping cart</a>
                 </div>
 
                 <div class="mt-3 mb-3">
@@ -181,10 +181,10 @@
 
 
 
-        //Show stored product data
+        //Show stored item data
         function shoppingCart(){
 
-            let total = 0; // Total products in LocalStorage
+            let total = 0; // Total items in LocalStorage
 
             let cartItems = '';
             let subTotal = []
@@ -196,8 +196,8 @@
             
             for (let id of ids) {
          
-                //Get product data from localStorage
-                let prod = localStorage.getItem("product" + id + ""); 
+                //Get item data from localStorage
+                let prod = localStorage.getItem("item" + id + ""); 
                 if(prod != null) {	
 
                     subTotal[id] = (parseFloat(localStorage.getItem("price" + id)) * parseFloat(localStorage.getItem("quantity" + id))).toFixed(2)
@@ -206,8 +206,8 @@
                             <div class="row">
 
                                 <div style="padding: 8px 20px 0px 16px">
-                                    <h5 class="product-name">
-                                        `+localStorage.getItem("product" + id)+
+                                    <h5 class="item-name">
+                                        `+localStorage.getItem("item" + id)+
                                     `</h5>
                                 </div>
         
@@ -257,7 +257,7 @@
         function removeFromCart(id){
 
             //Remove stored data in localStorage
-            window.localStorage.removeItem("product" + id);
+            window.localStorage.removeItem("item" + id);
             window.localStorage.removeItem("quantity" + id);
             window.localStorage.removeItem("price" + id);
 
@@ -345,14 +345,14 @@
 
                         id = data.serial;
 
-                        defineModalMessage('<span style="color:green">product &nbsp;<b>' + name + '</b>&nbsp; has been successfully inserted</span>');
+                        defineModalMessage('<span style="color:green">item &nbsp;<b>' + name + '</b>&nbsp; has been successfully inserted</span>');
                         
                         document.querySelector("#formInsert").reset();
                         document.querySelector("#list").innerHTML = ''
     
     
                         document.querySelector("#message-alert").innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">                  
-                            product <b>` + name + `</b> has been successfully inserted
+                            item <b>` + name + `</b> has been successfully inserted
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -409,7 +409,7 @@
 
                              document.querySelector("#list").innerHTML = ''
 
-                            if(status == 200 || message == 'Product data missing'){
+                            if(status == 200 || message == 'Item data missing'){
                                 document.getElementById("formInsertImage").reset(); 
                             }
                             else{
@@ -427,9 +427,9 @@
 
                 }
 
-                //Clear products list
+                //Clear items list
                 document.querySelector("#list").innerHTML = ''; 
-                //Refresh products list with new insert product
+                //Refresh items list with new insert item
                 listAll();
             }
             else{
@@ -471,7 +471,7 @@
 
                             const image = imagesUrl+'/'+data[i].image+'?updated='+data[i].updated;
 
-                            //Generate table cells of table with products data
+                            //Generate table cells of table with items data
                             tr.innerHTML = '' +
                                            '<td><img src="' + image + '" alt="' + data[i].name + '" class="table-image"></td>' +
                                            '<td>' + data[i].name + '</td>' +
@@ -607,7 +607,7 @@
                          const updateDate = data.updated
                    
                         //fill input fields and divs with data from server
-                         document.querySelector("#showUpdateId").innerHTML = 'Product ID: <b>' + id + '</b>'
+                         document.querySelector("#showUpdateId").innerHTML = 'Item ID: <b>' + id + '</b>'
                          document.querySelector("#created").innerHTML = 'Created at: <b>' + createDate + '</b>'
                          document.querySelector("#updated").innerHTML = 'Updated at: <b>' + updateDate + '</b>'
 
@@ -618,7 +618,7 @@
 
                          document.querySelector("#showUpdateImage").src = imagesUrl+'/'+data.image+'?updated='+updateDate
                          
-                         document.querySelector("#showDeleteName").innerHTML = 'Really delete product: <b>' + data.name + '</b> ?'
+                         document.querySelector("#showDeleteName").innerHTML = 'Really delete item: <b>' + data.name + '</b> ?'
                          document.querySelector("#deleteId").value = id
                          document.querySelector("#deleteName").value = data.name
 
@@ -688,7 +688,7 @@
                         document.querySelector("#list").innerHTML = ''; 
 
                         document.querySelector("#message-alert").innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">                  
-                            product <b>` + name + `</b> has been successfully updated
+                            item <b>` + name + `</b> has been successfully updated
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -738,7 +738,7 @@
     
                             message = data.message;
 
-                            if(status == 200 || message == 'Product data missing'){
+                            if(status == 200 || message == 'Item data missing'){
                                 document.getElementById("formUpdateImage").reset();
                             }
                             else{
@@ -795,7 +795,7 @@
                     if(status == 204){
 
                         document.querySelector("#message-alert").innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">                  
-                        product <b>` + name + `</b> has been successfully deleted
+                        item <b>` + name + `</b> has been successfully deleted
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -837,7 +837,7 @@
 
 
 
-        async function listProducts(){
+        async function listItems(){
 
             await fetch(APIUrl)
                 .then(function(response){
@@ -846,18 +846,18 @@
 
                         data = data.data
 
-                        let products = '';
+                        let items = '';
 
                         for (i = 0; i < data.length; i++) {
 
                             data[i] = data[i].attributes
 
-                            products += `
+                            items += `
                             <div class="col-md-4">
-                                <figure class="card card-product-grid card-lg"> <a href="product.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
+                                <figure class="card card-item-grid card-lg"> <a href="item.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
                                     <figcaption class="info-wrap">
                                         <div class="row">
-                                            <div class="col-md-8"> <a href="product.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
+                                            <div class="col-md-8"> <a href="item.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
              
                                         </div>
                                     </figcaption>
@@ -869,7 +869,7 @@
                             `
                         }
 
-                        document.getElementById("productsList").innerHTML = products;
+                        document.getElementById("itemsList").innerHTML = items;
                 
                     });
                 })
@@ -884,7 +884,7 @@
 
         
 
-        async function searchProducts(){
+        async function searchItems(){
 
             let search =  document.querySelector("#search").value;
 
@@ -899,19 +899,19 @@
 
                             data = data.data
 
-                            let products = '';
+                            let items = '';
 
                             if(data.length > 0){
                                 for (i = 0; i < data.length; i++) {
 
                                     data[i] = data[i].attributes
 
-                                    products += `
+                                    items += `
                                     <div class="col-md-4">
-                                        <figure class="card card-product-grid card-lg"> <a href="product.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
+                                        <figure class="card card-item-grid card-lg"> <a href="item.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
                                             <figcaption class="info-wrap">
                                                 <div class="row">
-                                                    <div class="col-md-8"> <a href="product.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
+                                                    <div class="col-md-8"> <a href="item.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
                     
                                                 </div>
                                             </figcaption>
@@ -924,10 +924,10 @@
 
                                 }
 
-                                document.getElementById("productsList").innerHTML = products;
+                                document.getElementById("itemsList").innerHTML = items;
                             }
                             else{
-                                document.getElementById("productsList").innerHTML = '<div class="col-md-12">No product found</div>'
+                                document.getElementById("itemsList").innerHTML = '<div class="col-md-12">No item found</div>'
                             }
                     
                         });
@@ -939,15 +939,15 @@
 
             }
             else{
-                document.getElementById("productsList").innerHTML = '';
-                listProducts()
+                document.getElementById("itemsList").innerHTML = '';
+                listItems()
             }
 
         }
 
 
 
-        async function listOneProduct(slug){
+        async function listOneItem(slug){
 
             await fetch(APIUrl+'/'+slug)
             .then(function(response){
@@ -956,7 +956,7 @@
 
                 response.json().then(function(data){
                     
-                    let products = ''
+                    let items = ''
 
                     if(status == 200){
 
@@ -964,7 +964,7 @@
 
                         addToCartButton(data.serial, data.name, data.price);
 
-                        products = `
+                        items = `
                         <div class="card">
                         <div class="row">
                             <aside class="col-sm-7 border-right">
@@ -972,7 +972,7 @@
                             <div class="img-big-wrap">
                                 <div> 
                                     <a href="`+imagesUrl+'/'+data.image+`" target="_blank">
-                                        <img src="`+imagesUrl+'/'+data.image+`" class="productDetailImg">
+                                        <img src="`+imagesUrl+'/'+data.image+`" class="itemDetailImg">
                                     </a>
                                 </div>
                             </div> 
@@ -1022,11 +1022,11 @@
                     }
 
                     else{
-                        products = `Product not found`
+                        items = `Item not found`
                     }
 
 
-                    document.getElementById("productDetails").innerHTML = products;
+                    document.getElementById("itemDetails").innerHTML = items;
                     
                 });
             })

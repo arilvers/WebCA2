@@ -20,6 +20,7 @@ const dbCluster = process.env.DB_CLUSTER;
 //change connectionString acording to your server connection - in this case, is Atlas Mongo DB
 let connectionString =  ''+dbServer+dbUser+':'+dbPassword+dbCluster+dbName;
 
+
 mongoose.Promise = global.Promise;
 //Connect to Mongo database
 mongoose.connect(connectionString, {
@@ -52,7 +53,7 @@ const getDateTime = function() {
 
 
 //Define model to generate database and collection automatically
-const productSchema = mongoose.Schema({
+const itemSchema = mongoose.Schema({
     serial: { type: String,  unique: true, required: true, trim: true },
     name: { type: String, unique: true, required: true, trim: true },
     slug: { type: String, unique: true, required: true, trim: true },
@@ -62,25 +63,25 @@ const productSchema = mongoose.Schema({
     updated: { type: String, default: getDateTime() }
 });
 
-//Generate Collection product
-const Product = mongoose.model('product', productSchema);
+//Generate Collection item
+const Item = mongoose.model('item', itemSchema);
 
 
 //Function to format data into json
-const transformer = product => ({
-    type: 'products',
+const transformer = item => ({
+    type: 'items',
     attributes: {
-        serial: product.serial,
-        name: product.name,
-        slug: product.slug,
-        price: product.price,
-        description: product.description,
-        image: `/images/${product.serial}.jpg`,
-        created: product.created,
-        updated: product.updated
+        serial: item.serial,
+        name: item.name,
+        slug: item.slug,
+        price: item.price,
+        description: item.description,
+        image: `/images/${item.serial}.jpg`,
+        created: item.created,
+        updated: item.updated
     },
     links: {
-        self: `/api/products/${product.serial}`
+        self: `/api/items/${item.serial}`
     }
 }); 
 
@@ -100,9 +101,9 @@ app.get('/', (req, res) => {
 
 
 /* Create - POST method */
-app.post('/api/products', async(req, res) => {
+app.post('/api/items', async(req, res) => {
 
-    //create product object for fields
+    //create item object for fields
     let inputData = {}
 
     //get serial by Timestamp
@@ -123,7 +124,7 @@ app.post('/api/products', async(req, res) => {
 
     if(req.files == null || req.files == ''){
 
-        //Generate defult image named with product serial
+        //Generate defult image named with item serial
         inputData.image = 'images/'+inputData.serial+'.jpg'
 
         //Copy default image to images folder
@@ -164,26 +165,26 @@ app.post('/api/products', async(req, res) => {
     if (empty(inputData.name) || empty(inputData.price) || empty(inputData.description)) {
         return res.status(202).send(
             {
-                message: 'Product data missing'
+                message: 'Item data missing'
             }
         )
     }
 
 
-    verify = await Product.findOne({ name: inputData.name }, 'name').exec();
+    verify = await Item.findOne({ name: inputData.name }, 'name').exec();
     if (verify !== null){
         if (verify.name == inputData.name) {
             return res.status(202).send(
                 {
-                    message: 'This product name already exists'
+                    message: 'This item name already exists'
                 }
             )
         }
     }
 
     
-    //save the new product data to database
-    new Product({
+    //save the new item data to database
+    new Item({
         serial:  inputData.serial,
         name:  inputData.name,
         slug:  inputData.slug,
@@ -206,7 +207,7 @@ app.post('/api/products', async(req, res) => {
     res.status(201).send(
         {
             serial: inputData.serial,
-            message: ''+inputData.name+' product has been successfully created',
+            message: ''+inputData.name+' item has been successfully created',
             self: linkSelf+'/'+inputData.serial,
             image: linkImage+'/images/'+inputData.serial+'.jpg'
         }
@@ -216,27 +217,27 @@ app.post('/api/products', async(req, res) => {
 
 
 /* Read - GET method */
-app.get('/api/products', async(req, res) => {
+app.get('/api/items', async(req, res) => {
 
-    let products = {}
+    let items = {}
 
     //Search for name
     if(req.query.search && req.query.search !== null){
 
         const search = sanitize(req.query.search);
-        products = await Product.find( { $or:[ 
+        items = await Item.find( { $or:[ 
             {'name': { "$regex": search, $options: 'i' }},  
             {'description': { "$regex": search, $options: 'i' }} 
         ]});
 
-        if (Array.isArray(products) && products.length) {
-            const data = {data: products.map(transformer)};
+        if (Array.isArray(items) && items.length) {
+            const data = {data: items.map(transformer)};
             res.status(200).send(data)
         }
         else{
             return res.status(404).send(
                 {
-                    message: 'Not exists products for search '+search+''
+                    message: 'Not exists items for search '+search+''
                 }
             )
         }
@@ -245,8 +246,8 @@ app.get('/api/products', async(req, res) => {
     }
     else{
 
-        products = await Product.find().sort({serial: -1})
-        const data = {data: products.map(transformer)};
+        items = await Item.find().sort({serial: -1})
+        const data = {data: items.map(transformer)};
         res.status(200).send(data)
 
     }
@@ -255,32 +256,32 @@ app.get('/api/products', async(req, res) => {
 
 
 /* Read one - GET method - get register by serial or slug */
-app.get('/api/products/:serial', async (req, res) => {
+app.get('/api/items/:serial', async (req, res) => {
 
     //get the serial from url
     const serial = sanitize(req.params.serial);
 
-    let product = {};
+    let item = {};
     
     //If is number, search by serial, else, search by slug
     if(isNaN(serial)){
         //check if the slug exist
-        product = await Product.findOne({ slug: serial }).exec();
+        item = await Item.findOne({ slug: serial }).exec();
     }
     else{
         //check if the serial exist
-        product = await Product.findOne({ serial: serial }).exec();
+        item = await Item.findOne({ serial: serial }).exec();
     }
 
 
-    if (product !== null) {
-        const data = {data: [transformer(product)]};
+    if (item !== null) {
+        const data = {data: [transformer(item)]};
         res.status(200).send(data)
     }
     else{
         return res.status(404).send(
             {
-                message: 'The product with serial or slug '+serial+' not exist'
+                message: 'The item with serial or slug '+serial+' not exist'
             }
         )
     }
@@ -293,18 +294,18 @@ app.get('/api/products/:serial', async (req, res) => {
 
 
 /* Update - PUT method */
-app.put('/api/products/:serial', async (req, res) => {
+app.put('/api/items/:serial', async (req, res) => {
     //get the serial from url
     const serial = sanitize(req.params.serial);
 
-    //Verify if exists product with this serial
-    verify = await Product.findOne({ serial: serial }, 'serial name').exec();
+    //Verify if exists item with this serial
+    verify = await Item.findOne({ serial: serial }, 'serial name').exec();
 
     if (verify !== null){
 
         if (verify.serial == serial) {
 
-            //create product object for fields
+            //create item object for fields
             let inputData = {}
 
             //get serial by url
@@ -353,7 +354,7 @@ app.put('/api/products/:serial', async (req, res) => {
             if (empty(inputData.name) || empty(inputData.price) || empty(inputData.description)) {
                 return res.status(202).send(
                     {
-                        message: 'Product data missing'
+                        message: 'Item data missing'
                     }
                 )
             }
@@ -371,7 +372,7 @@ app.put('/api/products/:serial', async (req, res) => {
             };
 
 
-            await Product.findOneAndUpdate(filter, update);
+            await Item.findOneAndUpdate(filter, update);
 
 
             const linkSelf = (req.protocol+'://'+req.get('host')+req.originalUrl).slice(0, -14);
@@ -380,7 +381,7 @@ app.put('/api/products/:serial', async (req, res) => {
             res.status(200).send(
                 {
                     serial: inputData.serial, 
-                    message: ''+inputData.name+' product has been successfully updated',
+                    message: ''+inputData.name+' item has been successfully updated',
                     self: linkSelf+'/'+inputData.serial,
                     image: linkImage+'/images/'+inputData.serial+'.jpg'
                 }
@@ -390,7 +391,7 @@ app.put('/api/products/:serial', async (req, res) => {
     else{
         return res.status(404).send(
             {
-                message: 'Not exists product with this serial'
+                message: 'Not exists item with this serial'
             }
         )
     }
@@ -402,16 +403,16 @@ app.put('/api/products/:serial', async (req, res) => {
 
 
 /* Delete - Delete method */
-app.delete('/api/products/:serial', async (req, res) => {
+app.delete('/api/items/:serial', async (req, res) => {
     
     const serial = sanitize(req.params.serial);
     
-    verify = await Product.findOne({ serial: serial }, 'serial').exec();
+    verify = await Item.findOne({ serial: serial }, 'serial').exec();
     if (verify !== null){
         if (verify.serial == serial) {
 
 
-            product = await Product.deleteOne({ serial: serial }).exec();
+            item = await Item.deleteOne({ serial: serial }).exec();
 
             //Remove image from server 
             imageToDelete = 'src/api/public/images/'+serial+'.jpg'
@@ -434,7 +435,7 @@ app.delete('/api/products/:serial', async (req, res) => {
     else{
         return res.status(404).send(
             {
-                message: 'Not exists product with this serial'
+                message: 'Not exists item with this serial'
             }
         )
     }

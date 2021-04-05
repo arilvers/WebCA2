@@ -18,7 +18,7 @@
 
 </head>
 
-<body onload="listProducts()">
+<body onload="listItems()">
     
 
     <div class="container">
@@ -33,15 +33,15 @@
             <form id="formSearch">
 
                 <div class="form-label-group">
-                    <input type="text" id="search" onkeyup="searchProducts();" class="form-control" placeholder="Search product">
+                    <input type="text" id="search" onkeyup="searchItems();" class="form-control" placeholder="Search product">
                     <label for="search">Search product</label>
-                    <i class="fas fa-search" onclick="searchProducts();" id="searchButton"></i>
+                    <i class="fas fa-search" onclick="searchItems();" id="searchButton"></i>
                 </div>
            
             </form>
         </div>
 
-        <div class="row" id="productsList"></div>
+        <div class="row" id="itemsList"></div>
 
     </div>
 
