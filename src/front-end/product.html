@@ -57,7 +57,7 @@
     </div>
     
     
-    <div id="productDetails"></div>
+    <div id="itemDetails"></div>
 
     
 
@@ -121,7 +121,7 @@
         location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
         const slug = queryDict['slug']
         console.log(slug)
-        listOneProduct(slug);
+        listOneItem(slug);
     </script>
 
 

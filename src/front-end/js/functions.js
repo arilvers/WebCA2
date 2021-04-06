@@ -854,10 +854,10 @@
 
                             items += `
                             <div class="col-md-4">
-                                <figure class="card card-item-grid card-lg"> <a href="item.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
+                                <figure class="card card-item-grid card-lg"> <a href="product.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
                                     <figcaption class="info-wrap">
                                         <div class="row">
-                                            <div class="col-md-8"> <a href="item.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
+                                            <div class="col-md-8"> <a href="product.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
              
                                         </div>
                                     </figcaption>
@@ -908,10 +908,10 @@
 
                                     items += `
                                     <div class="col-md-4">
-                                        <figure class="card card-item-grid card-lg"> <a href="item.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
+                                        <figure class="card card-item-grid card-lg"> <a href="product.html?slug=`+data[i].slug+`" class="img-wrap" data-abc="true"><img src="`+imagesUrl+'/'+data[i].image+`"></a>
                                             <figcaption class="info-wrap">
                                                 <div class="row">
-                                                    <div class="col-md-8"> <a href="item.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
+                                                    <div class="col-md-8"> <a href="product.html?slug=`+data[i].slug+`" class="title" data-abc="true">`+data[i].name+`</a> </div>
                     
                                                 </div>
                                             </figcaption>
