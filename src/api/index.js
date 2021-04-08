@@ -201,7 +201,7 @@ app.post('/api/items', async(req, res) => {
     const linkSelf = req.protocol+'://'+req.get('host')+req.originalUrl
 
     //Generate image link from image stored in server
-    const linkImage = (req.protocol+'://'+req.get('host')+req.originalUrl).slice(0, -13)
+    const linkImage = (linkSelf).slice(0, -10)
     
     //Formated response 
     res.status(201).send(
@@ -376,7 +376,9 @@ app.put('/api/items/:serial', async (req, res) => {
 
 
             const linkSelf = (req.protocol+'://'+req.get('host')+req.originalUrl).slice(0, -14);
-            const linkImage = linkSelf.slice(0, -13)
+            const linkImage = linkSelf.slice(0, -10)
+
+
 
             res.status(200).send(
                 {
